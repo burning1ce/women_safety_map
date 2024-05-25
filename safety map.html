@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pune Safety Map</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 100vh;
+        }
+        #legend {
+            background: white;
+            line-height: 1.5;
+            padding: 6px 8px;
+            font: 14px/16px Arial, Helvetica, sans-serif;
+        }
+        #legend h4 {
+            margin: 0 0 5px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div id="legend">
+        <h4>Legend</h4>
+        <p><span style="background-color: green; color: white;">&nbsp;&nbsp;&nbsp;&nbsp;</span> PCMC, Baner, Aundh, Kothrud, Camp</p>
+        <p><span style="background-color: orange; color: black;">&nbsp;&nbsp;&nbsp;&nbsp;</span> Hinjewadi</p>
+        <p><span style="background-color: red; color: white;">&nbsp;&nbsp;&nbsp;&nbsp;</span> Viman Nagar, Hadapsar</p>
+        <h4>Feedback</h4>
+        <form action="https://docs.google.com/forms/d/e/1FAIpQLSd7v9R2-qq4np93GiXMddW0FZ5lFzVx7K-cwLYbeOAPdKrbfQ/formResponse" method="POST" target="hidden_iframe" onsubmit="submitted=true;">
+            <label for="location">Location:</label>
+            <select id="location" name="entry.123456789">
+                <option value="PCMC">PCMC</option>
+                <option value="Hinjewadi">Hinjewadi</option>
+                <option value="Baner">Baner</option>
+                <option value="Aundh">Aundh</option>
+                <option value="Viman Nagar">Viman Nagar</option>
+                <option value="Hadapsar">Hadapsar</option>
+                <option value="Kothrud">Kothrud</option>
+                <option value="Camp">Camp</option>
+            </select><br>
+            <label for="thoughts">Your thoughts:</label><br>
+            <textarea id="thoughts" name="entry.987654321" rows="4" cols="50"></textarea><br>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) {window.location.reload();}"></iframe>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        var map = L.map('map').setView([18.5204, 73.8567], 12);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19
+        }).addTo(map);
+
+        var areas = {
+            "PCMC": {lat: 18.6298, lng: 73.7997, color: "green"},
+            "Hinjewadi": {lat: 18.5917, lng: 73.7384, color: "orange"},
+            "Baner": {lat: 18.5604, lng: 73.7809, color: "green"},
+            "Aundh": {lat: 18.5636, lng: 73.8076, color: "green"},
+            "Viman Nagar": {lat: 18.5679, lng: 73.9143, color: "red"},
+            "Hadapsar": {lat: 18.5088, lng: 73.9259, color: "red"},
+            "Kothrud": {lat: 18.5074, lng: 73.8077, color: "green"},
+            "Camp": {lat: 18.5133, lng: 73.8787, color: "green"}
+        };
+
+        for (var area in areas) {
+            L.circle([areas[area].lat, areas[area].lng], {
+                color: areas[area].color,
+                fillColor: areas[area].color,
+                fillOpacity: 0.5,
+                radius: 2000 // increased the radius for larger circles
+            }).addTo(map).bindPopup(area);
+        }
+    </script>
+</body>
+</html>
